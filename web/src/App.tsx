@@ -3,7 +3,8 @@ import { Button } from './components/ui/button';
 function App() {
   return (
     <div>
-      <Button>ola</Button>
+      <Button>Hello</Button>
+      <p className="text-lg">World!</p>
     </div>
   );
 }
