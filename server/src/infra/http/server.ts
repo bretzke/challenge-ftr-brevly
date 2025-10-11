@@ -14,6 +14,7 @@ import { AppError } from '@/shared/errors/AppError';
 import { listLinksRoute } from './routes/list-links';
 import { getLinkRoute } from './routes/get-link';
 import { deleteLinkRoute } from './routes/delete-link';
+import { exportLinksRoute } from './routes/export-links';
 
 const server = fastify();
 
@@ -58,6 +59,7 @@ server.register(createLinkRoute);
 server.register(listLinksRoute);
 server.register(getLinkRoute);
 server.register(deleteLinkRoute);
+server.register(exportLinksRoute);
 
 server
   .listen({
