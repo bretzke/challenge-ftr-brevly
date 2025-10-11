@@ -11,6 +11,7 @@ import {
 import { createLinkRoute } from './routes/create-link';
 import { env } from '@/utils/env';
 import { AppError } from '@/shared/errors/AppError';
+import { listLinksRoute } from './routes/list-links';
 
 const server = fastify();
 
@@ -52,6 +53,7 @@ server.register(fastifySwaggerUi, {
 });
 
 server.register(createLinkRoute);
+server.register(listLinksRoute);
 
 server
   .listen({
