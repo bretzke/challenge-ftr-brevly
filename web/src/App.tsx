@@ -1,11 +1,17 @@
-import { Button } from './components/ui/button';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import DefaultLayout from './layout/DefaultLayout';
+import IndexPage from './pages';
 
 function App() {
   return (
-    <div>
-      <Button>Hello</Button>
-      <p className="text-lg">World!</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<DefaultLayout />}>
+          <Route index element={<IndexPage />} />
+          <Route path="*" element={<p>404 - Página não encontrada</p>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
