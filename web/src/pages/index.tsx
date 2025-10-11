@@ -11,7 +11,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import AppLayout from '@/layout/AppLayout';
+import { apiClient } from '@/lib/axios';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -39,7 +41,21 @@ export default function IndexPage() {
   });
 
   async function onSubmit(formValues: z.infer<typeof formSchema>) {
-    console.log(formValues);
+    try {
+      await apiClient.post('/links', {
+        originalLink: formValues.originalLink,
+        shortLink: formValues.shortLink,
+      });
+
+      form.reset();
+    } catch (e) {
+      if (e instanceof AxiosError && e.response?.status == 400) {
+        form.setError('shortLink', { message: e.response?.data.message });
+        return;
+      }
+
+      alert('Erro inesperado. Tente mais tarde.');
+    }
   }
 
   return (
