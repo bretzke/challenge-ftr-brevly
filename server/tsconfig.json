@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node 22",
+  "_version": "22.0.0",
+
+  "compilerOptions": {
+    "lib": ["es2023"],
+    "module": "ESNext",
+    "target": "ESNext",
+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "bundler", // será utilizado o bundling para converter o ts para js, por isso precisa estar com esse valor
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
