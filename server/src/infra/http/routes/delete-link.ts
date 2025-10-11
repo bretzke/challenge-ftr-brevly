@@ -1,3 +1,4 @@
+import { deleteLink } from '@/app/functions/delete-link';
 import { getLink } from '@/app/functions/get-link';
 import type { FastifyInstance } from 'fastify';
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
@@ -8,30 +9,26 @@ const getLinkParamsSchema = z.object({
 });
 type GetLinkParams = z.infer<typeof getLinkParamsSchema>;
 
-export const getLinkRoute: FastifyPluginAsyncZod = async (server: FastifyInstance) => {
-  server.get(
+export const deleteLinkRoute: FastifyPluginAsyncZod = async (server: FastifyInstance) => {
+  server.delete(
     '/links/:shortLink',
     {
       schema: {
-        summary: 'Get Link',
+        summary: 'Delete Link',
         tags: ['Links'],
         params: getLinkParamsSchema,
         response: {
-          200: z.object({
-            id: z.string(),
-            originalLink: z.string(),
-            shortLink: z.string(),
-            createdAt: z.date(),
-          }),
+          204: z.null().describe('Link deleted.'),
+          404: z.object({ message: z.string() }),
         },
       },
     },
     async (request, reply) => {
       const { shortLink } = request.params as GetLinkParams;
 
-      const link = await getLink({ shortLink });
+      await deleteLink({ shortLink });
 
-      return reply.status(200).send(link);
+      return reply.status(204).send();
     }
   );
 };

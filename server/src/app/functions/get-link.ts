@@ -10,24 +10,16 @@ interface GetLinkParams {
 }
 
 export async function getLink({ shortLink }: GetLinkParams): Promise<LinkModel> {
-  const fullShortLink = `brev.ly/${shortLink.toLowerCase()}`;
+  const fullShortLink = `brev.ly/${shortLink}`;
 
-  const linksWithVisits = await db
-    .select({
-      id: schema.links.id,
-      originalLink: schema.links.originalLink,
-      shortLink: schema.links.shortLink,
-      createdAt: schema.links.createdAt,
-    })
-    .from(schema.links)
-    .where(eq(schema.links.shortLink, fullShortLink))
-    .limit(1);
+  const selectedLink = await db.query.links.findFirst({
+    columns: { id: true, createdAt: true, originalLink: true, shortLink: true },
+    where: eq(schema.links.shortLink, fullShortLink),
+  });
 
-  if (!linksWithVisits.length) {
+  if (!selectedLink) {
     throw new AppError(ErrorMessages.SHORT_LINK_DOES_NOT_EXIST);
   }
-
-  const selectedLink = linksWithVisits[0];
 
   await db.insert(schema.visits).values({
     linkId: selectedLink.id,
