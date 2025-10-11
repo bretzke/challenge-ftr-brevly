@@ -1,10 +1,11 @@
 import { pgTable, uuid, timestamp, serial } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 import { links } from './links';
+import { uuidv7 } from 'uuidv7';
 
 export const visits = pgTable('visits', {
   id: uuid('id')
-    .default(sql`uuid_generate_v7()`)
+    .$defaultFn(() => uuidv7())
     .primaryKey(),
   linkId: uuid('link_id')
     .notNull()

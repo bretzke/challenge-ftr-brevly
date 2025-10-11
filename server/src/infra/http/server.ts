@@ -9,8 +9,8 @@ import {
   validatorCompiler,
 } from 'fastify-type-provider-zod';
 import { createLinkRoute } from './routes/create-link';
-import { ZodError } from 'zod';
 import { env } from '@/utils/env';
+import { AppError } from '@/shared/errors/AppError';
 
 const server = fastify();
 
@@ -25,9 +25,15 @@ server.setErrorHandler((error, request, reply) => {
     });
   }
 
+  if (error instanceof AppError) {
+    return reply.status(error.statusCode).send({
+      message: error.message,
+    });
+  }
+
   console.error(error);
 
-  return reply.status(500).send({ message: 'Internal server error.' });
+  return reply.status(500).send({ message: 'Erro inesperado. Tente mais tarde.' });
 });
 
 server.register(fastifyCors, { origin: '*' });
