@@ -1,16 +1,9 @@
 import { db } from '@/infra/db';
 import { schema } from '@/infra/db/schemas';
 import { sql, count, desc } from 'drizzle-orm';
+import { LinkWithVisitModel } from '../models/LinkModel';
 
-type ListLinksOutput = {
-  id: string;
-  originalLink: string;
-  shortLink: string;
-  createdAt: Date;
-  totalVisits: number;
-};
-
-export async function listLinks(): Promise<ListLinksOutput[]> {
+export async function listLinks(): Promise<LinkWithVisitModel[]> {
   const linksWithVisits = await db
     .select({
       id: schema.links.id,

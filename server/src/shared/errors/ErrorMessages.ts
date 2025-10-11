@@ -4,4 +4,8 @@ export const ErrorMessages = {
     message: 'A URL encurtada informada está mal formatada.',
     statusCode: 400,
   },
+  SHORT_LINK_DOES_NOT_EXIST: {
+    message: 'A URL encurtada informada não existe.',
+    statusCode: 404,
+  },
 };
